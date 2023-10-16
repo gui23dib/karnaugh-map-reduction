@@ -8,16 +8,6 @@ class variavel {
 	}
 }
 
-class pattern {
-	tamanho: number
-	cord: number[][]
-
-	constructor(tamanho, cord){
-		this.tamanho = tamanho
-		this.cord = cord
-	}
-}
-
 class KMap {
 	tamanho: number = 0
 	mapa: number[][] = [
@@ -25,7 +15,12 @@ class KMap {
 		[0, 1, 1, 0],
 		[1, 1, 1 ,0],
 		[1, 1, 1, 0],
+		// [1, 1, 1, 1],
+		// [1, 0, 0, 0],
+		// [1, 0, 0 ,0],
+		// [1, 1, 1, 1],
 	]
+	
 	variaveis: variavel[] = []
 	submatricesToFind: number[][][] = [
 		[
@@ -37,6 +32,15 @@ class KMap {
 			[1, 1],
 			[1, 1],
 			[1, 1],
+		],
+		[
+			[1, 1, 1, 1],
+		],
+		[
+			[1],
+			[1],
+			[1],
+			[1],
 		],
 		[
 			[1, 1],
@@ -62,7 +66,7 @@ class KMap {
 		}
 
 		const makeArray = (n) => {
-			var arr = new Array(n), i, l;
+			let arr = new Array(n), i, l;
 			for(i = 0, l = n; i < l; i++) arr[i] = new Array(n);
 			return arr;
 		}
@@ -71,11 +75,11 @@ class KMap {
 
 		for(let i = 1 ; i <= tamanho ; i++){
 
-			let tempValuesTable: number[][] = makeArray(tamanho)
-			let proximoPar: number = getNextEven(i)
-			let varDivisionQuotient: number = tamanho / proximoPar
+			const tempValuesTable: number[][] = makeArray(tamanho)
+			const proximoPar: number = getNextEven(i)
+			const varDivisionQuotient: number = tamanho / proximoPar
 			
-			let modQ: number = (proximoPar/ 2) - 1
+			const modQ: number = (proximoPar/ 2) - 1
 
 			const varDivisionValue = (n) => n >= modQ && n < varDivisionQuotient + modQ + (modQ > 0 ? modQ : 0)  ? 1 : 0
 
@@ -127,7 +131,8 @@ class KMap {
 					let isCollapsing = false;
 	
 					for (const existingPositions of nonCollapsingPositions) {
-						const overlapping = subPositions.some(coord => existingPositions.some(existingCoord => existingCoord[0] === coord[0] && existingCoord[1] === coord[1]));
+						const overlapping = subPositions.every(coord => existingPositions.some(existingCoord => existingCoord[0] === coord[0] && existingCoord[1] === coord[1]));
+						console.log('overlapping', overlapping)
 						if (overlapping) {
 							isCollapsing = true;
 							break;
@@ -172,7 +177,7 @@ class KMap {
 	
 
 	getMapReduction(){
-		let res: string[] = []
+		const res: string[] = []
 
 		const allSubmatrices: number[][][] = teste.getMatchingsInMap(this.mapa, this.submatricesToFind);
 
