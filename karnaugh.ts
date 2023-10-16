@@ -1,5 +1,5 @@
-class varivel {
-	letra: CharacterData
+class variavel {
+	letra: string
 	area: number[][]
 
 	constructor(letra, area){
@@ -18,30 +18,6 @@ class pattern {
 	}
 }
 
-class CircularList<T> {
-	private data: T[];
-	private currentIndex: number;
-
-	constructor(data: T[]) {
-		this.data = data;
-		this.currentIndex = 0;
-	}
-
-	getCurrent(): T {
-		return this.data[this.currentIndex];
-	}
-
-	moveNext(): T {
-		this.currentIndex = (this.currentIndex + 1) % this.data.length;
-	return this.getCurrent();
-	}
-
-	movePrevious(): T {
-		this.currentIndex = (this.currentIndex - 1 + this.data.length) % this.data.length;
-		return this.getCurrent();
-	}
-}
-
 class KMap {
 	tamanho: number = 0
 	mapa: number[][] = [
@@ -50,7 +26,31 @@ class KMap {
 		[1, 1, 1 ,0],
 		[1, 1, 1, 0],
 	]
-	variaveis: varivel[] = []
+	variaveis: variavel[] = []
+	submatricesToFind: number[][][] = [
+		// [
+		// 	[1, 1, 1, 1],
+		// 	[1, 1, 1, 1],
+		// ],
+		[
+			[1, 1],
+			[1, 1],
+			[1, 1],
+			[1, 1],
+		],
+		// [
+		// 	[1, 1],
+		// 	[1, 1],
+		// ],
+		// [
+		// 	[1, 1],
+		// ],
+		// [
+		// 	[1],
+		// 	[1]
+		// ],
+		];
+
 
 	setVariaveisByTamanho(tamanho: number){
 		const isEven = (n: number) => n % 2 == 0  
@@ -90,14 +90,14 @@ class KMap {
 			}
 			const tempLetra = String.fromCharCode(64 + i)
 			
-			this.variaveis.push(new varivel(tempLetra, tempValuesTable))
+			this.variaveis.push(new variavel(tempLetra, tempValuesTable))
 		}
 	}
 
 	getMatchingsInMap(){
 		function findSubmatrixPositions(matrix: number[][], submatrix: number[][]): [number, number][][] {
 			const positions: [number, number][][] = [];
-		  
+		
 			const numRows = matrix.length;
 			const numCols = matrix[0].length;
 			const subRows = submatrix.length;
@@ -126,33 +126,9 @@ class KMap {
 			return positions;
 		}
 
-		const submatricesToFind: number[][][] = [
-			// [
-			// 	[1, 1, 1, 1],
-			// 	[1, 1, 1, 1],
-			// ],
-			[
-				[1, 1],
-				[1, 1],
-				[1, 1],
-				[1, 1],
-			],
-			// [
-			// 	[1, 1],
-			// 	[1, 1],
-			// ],
-			// [
-			// 	[1, 1],
-			// ],
-			// [
-			// 	[1],
-			// 	[1]
-			// ],
-			];
-
 		let res: number[][][][] = [];
 
-		for (const submatrixToFind of submatricesToFind) {
+		for (const submatrixToFind of this.submatricesToFind) {
 			res.push(findSubmatrixPositions(this.mapa, submatrixToFind))
 		}
 		//console.log(res)
@@ -162,11 +138,36 @@ class KMap {
 		return res;
 	}
 
-	getMapReduction(){
+	getVariableReduction(kVar: variavel , matrix: number[][] ){
+		function processCoordinates(matrix: number[][], coordinates: [number, number][]): string {
+			let hasZero = false;
+			let hasOne = false;
+		
+			for (const coord of coordinates) {
+				const [row, col] = coord;
+				if (matrix[row] && matrix[row][col] !== undefined) {
+					if (matrix[row][col] === 0) {
+						hasZero = true;
+					} else if (matrix[row][col] === 1) {
+						hasOne = true;
+					}
+				}
+			}
+		
+			if (hasZero && hasOne) {
+				return "";
+			} else if (hasZero) {
+				return kVar.letra + "'";
+			} else if (hasOne) {
+				return kVar.letra;
+			}
+			return ""
+		}
 
-		this.variaveis.forEach(element => {
-			
-		});
+
+	}
+
+	getMapReduction(){
 	}
 }
 
