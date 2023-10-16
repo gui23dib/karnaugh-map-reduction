@@ -8,29 +8,39 @@ class varivel {
 	}
 }
 
+class pattern {
+	tamanho: number
+	cord: number[][]
+
+	constructor(tamanho, cord){
+		this.tamanho = tamanho
+		this.cord = cord
+	}
+}
+
 class CircularList<T> {
 	private data: T[];
 	private currentIndex: number;
-  
+
 	constructor(data: T[]) {
-	  this.data = data;
-	  this.currentIndex = 0;
+		this.data = data;
+		this.currentIndex = 0;
 	}
-  
+
 	getCurrent(): T {
-	  return this.data[this.currentIndex];
+		return this.data[this.currentIndex];
 	}
-  
+
 	moveNext(): T {
-	  this.currentIndex = (this.currentIndex + 1) % this.data.length;
-	  return this.getCurrent();
+		this.currentIndex = (this.currentIndex + 1) % this.data.length;
+	return this.getCurrent();
 	}
-  
+
 	movePrevious(): T {
-	  this.currentIndex = (this.currentIndex - 1 + this.data.length) % this.data.length;
-	  return this.getCurrent();
+		this.currentIndex = (this.currentIndex - 1 + this.data.length) % this.data.length;
+		return this.getCurrent();
 	}
-  }
+}
 
 class KMap {
 	tamanho: number = 0
@@ -85,43 +95,83 @@ class KMap {
 	}
 
 	getMatchingsInMap(){
-		teste.mapa
+		function findSubmatrixPositions(matrix: number[][], submatrix: number[][]): [number, number][][] {
+			const positions: [number, number][][] = [];
+		  
+			const numRows = matrix.length;
+			const numCols = matrix[0].length;
+			const subRows = submatrix.length;
+			const subCols = submatrix[0].length;
+		
+			for (let row = 0; row <= numRows - subRows; row++) {
+				for (let col = 0; col <= numCols - subCols; col++) {
+					let match = true;
+					const currentPositions: [number, number][] = [];
+		
+					for (let i = 0; i < subRows; i++) {
+						for (let j = 0; j < subCols; j++) {
+							if (matrix[row + i][col + j] !== submatrix[i][j]) {
+								match = false;
+								break;
+							}
+							currentPositions.push([row + i, col + j]);
+						}
+					if (!match) break;
+					}
+					if (match) {
+						positions.push(currentPositions);
+					}
+				}
+			}
+			return positions;
+		}
+
+		const submatricesToFind: number[][][] = [
+			// [
+			// 	[1, 1, 1, 1],
+			// 	[1, 1, 1, 1],
+			// ],
+			[
+				[1, 1],
+				[1, 1],
+				[1, 1],
+				[1, 1],
+			],
+			// [
+			// 	[1, 1],
+			// 	[1, 1],
+			// ],
+			// [
+			// 	[1, 1],
+			// ],
+			// [
+			// 	[1],
+			// 	[1]
+			// ],
+			];
+
+		let res: number[][][][] = [];
+
+		for (const submatrixToFind of submatricesToFind) {
+			res.push(findSubmatrixPositions(this.mapa, submatrixToFind))
+		}
+		//console.log(res)
+		res.forEach((e) => {
+			console.log(e)
+		})
+		return res;
 	}
 
 	getMapReduction(){
-		//REDUCAO
+
+		this.variaveis.forEach(element => {
+			
+		});
 	}
 }
-function findSubmatrixPositions(matrix: number[][], submatrix: number[][]): [number, number][] {
-	const submatrixHeight = submatrix.length;
-	const submatrixWidth = submatrix[0].length;
-	const positions: [number, number][] = [];
-  
-	for (let i = 0; i <= matrix.length - submatrixHeight; i++) {
-	  for (let j = 0; j <= matrix[0].length - submatrixWidth; j++) {
-		let isMatch = true;
-  
-		// Verifica se a submatriz corresponde à matriz na posição atual
-		for (let m = 0; m < submatrixHeight; m++) {
-		  for (let n = 0; n < submatrixWidth; n++) {
-			if (matrix[i + m][j + n] !== submatrix[m][n]) {
-			  isMatch = false;
-			  break;
-			}
-		  }
-		  if (!isMatch) {
-			break;
-		  }
-		}
-  
-		if (isMatch) {
-		  positions.push([i, j]);
-		}
-	  }
-	}
-  
-	return positions;
-  }
+
+
+//!MAIN
 
 const teste: KMap = new KMap()
 teste.setVariaveisByTamanho(4)
@@ -135,40 +185,8 @@ teste.variaveis.forEach((vare) => {
 
 console.log("MAPA DE KARNAUGH:")
 teste.mapa.forEach((m)=> {
-	console.log(m)
+	console.log(m) 
 })
-  
-  const submatricesToFind: number[][][] = [
-	[
-	  [1, 1, 1, 1],
-	  [1, 1, 1, 1],
-	],
-	[
-	  [1, 1],
-	  [1, 1],
-	  [1, 1],
-	  [1, 1],
-	],
-	[
-		[1, 1],
-		[1, 1],
-	],
-	[
-		[1, 1],
-	  ],
-	  [
-		[1],
-		[1]
-	  ],
-  ];
-  
-  for (const submatrixToFind of submatricesToFind) {
-	const result = findSubmatrixPositions(teste.mapa, submatrixToFind);
-	console.log(`Submatriz:`);
-	for (const row of submatrixToFind) {
-	  console.log(row);
-	}
-	console.log(`Posições:`);
-	result.forEach((e) => console.log(e))
-	console.log('---');
-  }
+
+console.log("MATCHINGS:")
+teste.getMatchingsInMap()
