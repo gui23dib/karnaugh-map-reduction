@@ -28,27 +28,27 @@ class KMap {
 	]
 	variaveis: variavel[] = []
 	submatricesToFind: number[][][] = [
-		// [
-		// 	[1, 1, 1, 1],
-		// 	[1, 1, 1, 1],
-		// ],
+		[
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+		],
 		[
 			[1, 1],
 			[1, 1],
 			[1, 1],
 			[1, 1],
 		],
-		// [
-		// 	[1, 1],
-		// 	[1, 1],
-		// ],
-		// [
-		// 	[1, 1],
-		// ],
-		// [
-		// 	[1],
-		// 	[1]
-		// ],
+		[
+			[1, 1],
+			[1, 1],
+		],
+		[
+			[1, 1],
+		],
+		[
+			[1],
+			[1]
+		],
 		];
 
 
@@ -94,61 +94,67 @@ class KMap {
 		}
 	}
 
-	getMatchingsInMap(){
-		function findSubmatrixPositions(matrix: number[][], submatrix: number[][]): [number, number][][] {
-			const positions: [number, number][][] = [];
-		
-			const numRows = matrix.length;
-			const numCols = matrix[0].length;
+	getMatchingsInMap(matrix: number[][], submatrices: number[][][]): [number, number][][]{
+		const nonCollapsingPositions: [number, number][][] = [];
+
+		for (const submatrix of submatrices) {
 			const subRows = submatrix.length;
 			const subCols = submatrix[0].length;
-		
-			for (let row = 0; row <= numRows - subRows; row++) {
-				for (let col = 0; col <= numCols - subCols; col++) {
+	
+			for (let row = 0; row <= matrix.length - subRows; row++) {
+				for (let col = 0; col <= matrix[0].length - subCols; col++) {
 					let match = true;
-					const currentPositions: [number, number][] = [];
-		
+	
 					for (let i = 0; i < subRows; i++) {
 						for (let j = 0; j < subCols; j++) {
-							if (matrix[row + i][col + j] !== submatrix[i][j]) {
+							if (submatrix[i][j] === 1 && matrix[row + i][col + j] !== 1) {
 								match = false;
 								break;
 							}
-							currentPositions.push([row + i, col + j]);
 						}
-					if (!match) break;
+						if (!match) break;
 					}
-					if (match) {
-						positions.push(currentPositions);
+	
+				if (match) {
+					const subPositions: [number, number][] = [];
+	
+					for (let i = 0; i < subRows; i++) {
+						for (let j = 0; j < subCols; j++) {
+							subPositions.push([row + i, col + j]);
+						}
+					}
+	
+					let isCollapsing = false;
+	
+					for (const existingPositions of nonCollapsingPositions) {
+						const overlapping = subPositions.some(coord => existingPositions.some(existingCoord => existingCoord[0] === coord[0] && existingCoord[1] === coord[1]));
+						if (overlapping) {
+							isCollapsing = true;
+							break;
+						}
+					}
+	
+					if (!isCollapsing) {
+						nonCollapsingPositions.push(subPositions);
 					}
 				}
+				}
 			}
-			return positions;
 		}
-
-		let res: number[][][][] = [];
-
-		for (const submatrixToFind of this.submatricesToFind) {
-			res.push(findSubmatrixPositions(this.mapa, submatrixToFind))
-		}
-		//console.log(res)
-		res.forEach((e) => {
-			console.log(e)
-		})
-		return res;
+		console.log(nonCollapsingPositions)
+		return nonCollapsingPositions;
 	}
 
-	getVariableReduction(kVar: variavel , matrix: number[][] ){
-		function processCoordinates(matrix: number[][], coordinates: [number, number][]): string {
+	processCoordinates(kVar: variavel, coordinates: number[][]): string {
 			let hasZero = false;
 			let hasOne = false;
 		
 			for (const coord of coordinates) {
 				const [row, col] = coord;
-				if (matrix[row] && matrix[row][col] !== undefined) {
-					if (matrix[row][col] === 0) {
+				if (kVar.area[row] && kVar.area[row][col] !== undefined) {
+					if (kVar.area[row][col] === 0) {
 						hasZero = true;
-					} else if (matrix[row][col] === 1) {
+					} else if (kVar.area[row][col] === 1) {
 						hasOne = true;
 					}
 				}
@@ -162,12 +168,24 @@ class KMap {
 				return kVar.letra;
 			}
 			return ""
-		}
-
-
 	}
+	
 
 	getMapReduction(){
+		let res: string[] = []
+
+		const allSubmatrices: number[][][] = teste.getMatchingsInMap(this.mapa, this.submatricesToFind);
+
+		allSubmatrices.forEach(submatrix => {
+			let reductedStringResponse = ""
+			this.variaveis.forEach(variavel => {
+				const temp = this.processCoordinates(variavel, submatrix)
+				reductedStringResponse += temp
+			})
+			if(reductedStringResponse != "") res.push(reductedStringResponse)
+		})
+		
+		return res.join(" + ")
 	}
 }
 
@@ -189,5 +207,4 @@ teste.mapa.forEach((m)=> {
 	console.log(m) 
 })
 
-console.log("MATCHINGS:")
-teste.getMatchingsInMap()
+console.log(teste.getMapReduction())
