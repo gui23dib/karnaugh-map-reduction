@@ -1,4 +1,4 @@
-import { MapVariables } from "../../interfaces";
+import { MapVariables } from "./MapVariables";
 import { submatricesToFind } from "./Submatrices";
 
 export function getMatchingsInMap(matrix: number[][], submatrices: number[][][]): [number, number][][]{
@@ -35,7 +35,6 @@ export function getMatchingsInMap(matrix: number[][], submatrices: number[][][])
 
                 for (const existingPositions of nonCollapsingPositions) {
                     const overlapping = subPositions.every(coord => existingPositions.some(existingCoord => existingCoord[0] === coord[0] && existingCoord[1] === coord[1]));
-                    console.log('overlapping', overlapping)
                     if (overlapping) {
                         isCollapsing = true;
                         break;
@@ -90,7 +89,5 @@ export function getMapReduction(variaveis: MapVariables[], KMapObj: number[][]){
         })
         if(reductedStringResponse != "") res.push(reductedStringResponse)
     })
-    const a = res.join(" + ")
-    console.log(a)
-    return a
+    return res.join(" + ")
 }

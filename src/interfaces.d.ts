@@ -3,17 +3,8 @@ export interface KMapInterface {
     setMatrix: React.Dispatch<React.SetStateAction<number[][]>>;
 }
 
-export interface MapTileInterface extends KMapInterface {
+export interface MapTileInterface {
     value: number;
-    coord: {x: number, y: number}
-}
-
-export class MapVariables {
-	identifier: string
-	area: number[][]
-
-	constructor({identifier, area}: {identifier: string, area: number[][]}){
-		this.identifier = identifier;
-		this.area = area;
-	}
+    handleClick: (coord: {x: number, y:number}) => void;
+	coord: {x: number, y:number};
 }

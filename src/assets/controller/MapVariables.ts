@@ -1,6 +1,15 @@
-import { MapVariables } from "../../interfaces"
 
-export function setVariaveisByTamanho(tamanho: number){
+export class MapVariables {
+	identifier: string
+	area: number[][]
+
+	constructor({identifier, area}: {identifier: string, area: number[][]}){
+		this.identifier = identifier;
+		this.area = area;
+	}
+}
+
+export function setVariablesBySize(size: number){
     const isEven = (n: number) => n % 2 == 0  
     const getNextEven = (n: number) => {
         if(n % 2 == 0) return (n/2) + 1
@@ -15,17 +24,17 @@ export function setVariaveisByTamanho(tamanho: number){
 
     const res: MapVariables[] = []
 
-    for(let i = 1 ; i <= tamanho ; i++){
-        const tempValuesTable: number[][] = makeArray(tamanho)
+    for(let i = 1 ; i <= size ; i++){
+        const tempValuesTable: number[][] = makeArray(size)
         const nextEven: number = getNextEven(i)
-        const varDivisionQuotient: number = tamanho / nextEven
+        const varDivisionQuotient: number = size / nextEven
         
         const modQ: number = (nextEven/ 2) - 1
 
         const varDivisionValue = (n: number) => n >= modQ && n < varDivisionQuotient + modQ + (modQ > 0 ? modQ : 0)  ? 1 : 0
 
-        for(let y = 0 ; y < tamanho ; y++){
-            for(let x = 0 ; x < tamanho ; x++){
+        for(let y = 0 ; y < size ; y++){
+            for(let x = 0 ; x < size ; x++){
                 if(isEven(i)){ // eh par
                     tempValuesTable[y][x] = (varDivisionValue(y))
                 } else { // eh impar

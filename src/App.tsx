@@ -4,10 +4,14 @@ import "./App.css";
 import BasicButtonGroup from "./assets/components/Buttons";
 import "./index.css";
 import KMap from "./assets/components/KMap";
+import { Button } from "@mui/material";
+import { getMapReduction } from "./assets/controller/MapFunctions";
+import { setVariablesBySize } from "./assets/controller/MapVariables";
 
 function App() {
   const [matrixSize, setMatrixSize] = useState(4)
   const [matrix, setMatrix] = useState<number[][]>(createEmptyMatrix(matrixSize));
+  const [reduction, setReduction] = useState<string>("")
 
 
   function createEmptyMatrix(X: number): number[][] {
@@ -18,22 +22,31 @@ function App() {
     } else {
       const Y = Math.pow(2, Math.floor(X / 2));
       const Z = Y * 2;
-      console.log(Y, Z)
       const matriz: number[][] = new Array(Y).fill(0).map(() => new Array(Z).fill(0));
       return matriz;
     }
+  }
+
+  function handleSubmit(){
+    console.log('matrix', matrix)
+    console.log('matrixSize', matrixSize)
+    const x = setVariablesBySize(matrixSize)
+    setReduction(getMapReduction(x, matrix))
   }
   
   return (
     <div className="flex flex-col items-center h-[90vh] justify-evenly">
       <h1 className="m-6 font-bold text-center">Mapa de karnaugh</h1>
-      <h2 className="m-6 font-bold text-center">{matrixSize} variaveis | {Math.pow(2, matrixSize)} valores </h2>
-      <div className={`flex flex-row items-center justify-center ${matrixSize >= 7 ? matrixSize >= 8 ? "scale-25" : "scale-50" : "scale-100"}`}>
-        <form onSubmit={() => {}}>
-            <KMap matrix={matrix} setMatrix={setMatrix} />
-        </form>
-      </div>
-      <BasicButtonGroup btnFunction={(x: number) => setMatrix(createEmptyMatrix(x))} matrixSize={matrixSize} setMatrixSize={setMatrixSize}/>
+      <h2 className="m-6 font-bold text-center">{matrixSize} variables | {Math.pow(2, matrixSize)} values </h2>
+      <form>
+        <div className={`flex flex-row items-center justify-center ${matrixSize >= 7 ? matrixSize >= 8 ? "scale-25" : "scale-50" : "scale-100"}`}>
+              <KMap matrix={matrix} setMatrix={setMatrix} />
+        </div>
+        <BasicButtonGroup btnFunction={(x: number) => setMatrix(createEmptyMatrix(x))} matrixSize={matrixSize} setMatrixSize={setMatrixSize}/>
+        <Button onClick={() => setMatrix(createEmptyMatrix(matrixSize))}>CLEAR</Button>
+        <Button onClick={() => handleSubmit()}>REDUCE</Button>
+      </form>
+      <h1 className="m-6 font-bold text-center">{reduction}</h1>
     </div>
   );
 }
