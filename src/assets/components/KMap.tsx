@@ -1,19 +1,16 @@
+import { KMapInterface } from "../../interfaces";
 import MapTile from "./MapTile";
 
-interface KMapInterface {
-    matrix: number[][];
-}
-
-function KMap({matrix} : KMapInterface){
+function KMap({matrix, setMatrix} : KMapInterface){
 
 
     return (
         <div>
-            {matrix.map((row) => {
+            {matrix.map((row, rowIndex) => {
             return (
-                <div className="flex flex-row">
-                    {row.map((e) => {
-                        return <MapTile value={e} />
+                <div className="flex flex-row" key={`row ${rowIndex}`}>
+                    {row.map((col, colIndex) => {
+                        return <MapTile key={`col ${colIndex}`} value={col} setMatrix={setMatrix} matrix={matrix} coord={{x: rowIndex, y:colIndex}}/>
                     })}
                 </div>
             );
