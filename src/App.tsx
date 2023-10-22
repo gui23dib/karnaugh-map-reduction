@@ -50,7 +50,7 @@ function App() {
       <h2 className="m-6 font-bold text-center">{matrixSize} variables | {Math.pow(2, matrixSize)} values </h2>
       <form>
         <div className={`flex flex-row items-center justify-center ${matrixSize >= 7 ? matrixSize >= 8 ? "scale-25" : "scale-50" : "scale-100"}`}>
-              <KMap matrix={matrix} setMatrix={setMatrix} />
+              <KMap matrix={matrix} setMatrix={setMatrix} matrixSize={matrixSize} />
         </div>
         <BasicButtonGroup btnFunction={(x: number) => setMatrix(createEmptyMatrix(x))} matrixSize={matrixSize} setMatrixSize={setMatrixSize}/>
         <Button onClick={() => handleClear()}>CLEAR</Button>
