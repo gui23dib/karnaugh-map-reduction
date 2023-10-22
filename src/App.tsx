@@ -39,11 +39,6 @@ function App() {
     setReduction("")
   }
 
-  useEffect(() => {
-    console.log("render")
-  }, [matrix])
-  
-
   return (
     <div className="flex flex-col items-center h-[90vh] justify-evenly">
       <h1 className="m-6 font-bold text-center">Mapa de karnaugh</h1>
