@@ -1,6 +1,6 @@
 {
-  "homepage": "http://gui23dib.github.io/Karnaugh-Map-Reduction",
-  "name": "mapa_de_karnaugh",
+  "homepage": "http://gui23dib.github.io/karnaugh-map-reduction",
+  "name": "karnaugh-map-reduction",
   "private": false,
   "version": "0.1.0",
   "type": "module",
