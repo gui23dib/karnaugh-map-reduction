@@ -2,7 +2,7 @@
   "homepage": "http://gui23dib.github.io/Karnaugh-Map-Reduction",
   "name": "mapa_de_karnaugh",
   "private": false,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
