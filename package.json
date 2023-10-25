@@ -1,5 +1,5 @@
 {
-  "homepage": "http://gui23dib.github.io/karnaugh-map-reduction",
+  "homepage": "https://gui23dib.github.io/karnaugh-map-reduction",
   "name": "karnaugh-map-reduction",
   "private": false,
   "version": "0.1.0",
@@ -16,6 +16,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.12",
+    "gatsby": "^5.12.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.17.0",
